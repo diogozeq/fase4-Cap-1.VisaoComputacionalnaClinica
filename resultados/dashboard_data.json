@@ -1,0 +1,228 @@
+{
+  "projeto": {
+    "nome": "CardioIA — Fase 4",
+    "subtitulo": "Triagem de Cardiomegalia em raio-X de tórax (Visão Computacional)",
+    "aluno": "Diogo Zequini",
+    "rm": "565535",
+    "turma": "2TIAOA",
+    "dataset": "NIH Chest X-ray14 — Cardiomegaly vs No Finding",
+    "disclaimer": "Protótipo acadêmico (FIAP). NÃO é dispositivo médico, NÃO foi validado clinicamente e NÃO deve ser usado para diagnóstico real."
+  },
+  "metricas": [
+    {
+      "modelo": "CNN do zero",
+      "accuracy": 0.513,
+      "precision": 0.5256,
+      "recall": 0.4659,
+      "f1": 0.494,
+      "auc_roc": 0.5183,
+      "auc_pr": 0.5479,
+      "threshold": 0.5
+    },
+    {
+      "modelo": "Transfer frozen",
+      "accuracy": 0.6928,
+      "precision": 0.6944,
+      "recall": 0.7102,
+      "f1": 0.7022,
+      "auc_roc": 0.7646,
+      "auc_pr": 0.7675,
+      "threshold": 0.5
+    },
+    {
+      "modelo": "Transfer fine-tuning",
+      "accuracy": 0.6928,
+      "precision": 0.6733,
+      "recall": 0.7727,
+      "f1": 0.7196,
+      "auc_roc": 0.7697,
+      "auc_pr": 0.7698,
+      "threshold": 0.5
+    }
+  ],
+  "fairness": [
+    {
+      "atributo": "Patient Gender",
+      "subgrupo": "F",
+      "n": "164",
+      "positivos": "93",
+      "negativos": "71",
+      "TPR": "0.839",
+      "TPR_ic95": "[0.76,0.91]",
+      "FPR": "0.493",
+      "FPR_ic95": "[0.38,0.61]",
+      "precisao": "0.69",
+      "acuracia": "0.695"
+    },
+    {
+      "atributo": "Patient Gender",
+      "subgrupo": "M",
+      "n": "181",
+      "positivos": "83",
+      "negativos": "98",
+      "TPR": "0.699",
+      "TPR_ic95": "[0.59,0.80]",
+      "FPR": "0.316",
+      "FPR_ic95": "[0.22,0.40]",
+      "precisao": "0.652",
+      "acuracia": "0.691"
+    },
+    {
+      "atributo": "faixa_etaria",
+      "subgrupo": "<45",
+      "n": "134",
+      "positivos": "73",
+      "negativos": "61",
+      "TPR": "0.712",
+      "TPR_ic95": "[0.60,0.81]",
+      "FPR": "0.295",
+      "FPR_ic95": "[0.19,0.41]",
+      "precisao": "0.743",
+      "acuracia": "0.709"
+    },
+    {
+      "atributo": "faixa_etaria",
+      "subgrupo": "45-60",
+      "n": "109",
+      "positivos": "47",
+      "negativos": "62",
+      "TPR": "0.809",
+      "TPR_ic95": "[0.68,0.91]",
+      "FPR": "0.468",
+      "FPR_ic95": "[0.35,0.60]",
+      "precisao": "0.567",
+      "acuracia": "0.651"
+    },
+    {
+      "atributo": "faixa_etaria",
+      "subgrupo": ">60",
+      "n": "102",
+      "positivos": "56",
+      "negativos": "46",
+      "TPR": "0.821",
+      "TPR_ic95": "[0.72,0.91]",
+      "FPR": "0.413",
+      "FPR_ic95": "[0.27,0.55]",
+      "precisao": "0.708",
+      "acuracia": "0.716"
+    },
+    {
+      "atributo": "View Position",
+      "subgrupo": "AP",
+      "n": "139",
+      "positivos": "69",
+      "negativos": "70",
+      "TPR": "0.841",
+      "TPR_ic95": "[0.75,0.92]",
+      "FPR": "0.6",
+      "FPR_ic95": "[0.49,0.71]",
+      "precisao": "0.58",
+      "acuracia": "0.619"
+    },
+    {
+      "atributo": "View Position",
+      "subgrupo": "PA",
+      "n": "206",
+      "positivos": "107",
+      "negativos": "99",
+      "TPR": "0.729",
+      "TPR_ic95": "[0.64,0.81]",
+      "FPR": "0.242",
+      "FPR_ic95": "[0.16,0.33]",
+      "precisao": "0.765",
+      "acuracia": "0.743"
+    }
+  ],
+  "fairness_gaps": {
+    "Patient Gender": {
+      "gap_TPR": 0.14,
+      "gap_FPR": 0.177
+    },
+    "faixa_etaria": {
+      "gap_TPR": 0.109,
+      "gap_FPR": 0.173
+    },
+    "View Position": {
+      "gap_TPR": 0.112,
+      "gap_FPR": 0.358
+    }
+  },
+  "dataset": {
+    "total_imgs": 2400,
+    "total_pacientes": 1867,
+    "splits": {
+      "train": {
+        "imgs": 1707,
+        "pacientes": 1306,
+        "Cardiomegaly": 857,
+        "No Finding": 850
+      },
+      "val": {
+        "imgs": 348,
+        "pacientes": 280,
+        "Cardiomegaly": 167,
+        "No Finding": 181
+      },
+      "test": {
+        "imgs": 345,
+        "pacientes": 281,
+        "Cardiomegaly": 176,
+        "No Finding": 169
+      }
+    },
+    "genero": {
+      "M": {
+        "Cardiomegaly": 559,
+        "No Finding": 701
+      },
+      "F": {
+        "Cardiomegaly": 641,
+        "No Finding": 499
+      }
+    },
+    "view": {
+      "PA": {
+        "Cardiomegaly": 677,
+        "No Finding": 752
+      },
+      "AP": {
+        "Cardiomegaly": 523,
+        "No Finding": 448
+      }
+    },
+    "idade_min": 3.0,
+    "idade_max": 92.0,
+    "idade_media": 46.9
+  },
+  "plots": {
+    "confusao": [
+      "confusion_cnn_do_zero.png",
+      "confusion_transfer_fine-tuning.png",
+      "confusion_transfer_frozen.png"
+    ],
+    "roc": [
+      "roc_cnn_do_zero.png",
+      "roc_transfer_fine-tuning.png",
+      "roc_transfer_frozen.png"
+    ],
+    "pr": [
+      "pr_cnn_do_zero.png",
+      "pr_transfer_fine-tuning.png",
+      "pr_transfer_frozen.png"
+    ],
+    "treino": [
+      "history_cnn.png",
+      "history_transfer.png"
+    ],
+    "gradcam": [
+      "gradcam_1.png",
+      "gradcam_2.png",
+      "gradcam_3.png",
+      "gradcam_4.png"
+    ],
+    "fairness": [
+      "fairness_genero.png",
+      "fairness_idade.png"
+    ]
+  }
+}

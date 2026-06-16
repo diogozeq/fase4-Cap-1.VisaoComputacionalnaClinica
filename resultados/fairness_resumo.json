@@ -1,0 +1,16 @@
+{
+  "gaps": {
+    "Patient Gender": {
+      "gap_TPR": 0.14,
+      "gap_FPR": 0.177
+    },
+    "faixa_etaria": {
+      "gap_TPR": 0.109,
+      "gap_FPR": 0.173
+    },
+    "View Position": {
+      "gap_TPR": 0.112,
+      "gap_FPR": 0.358
+    }
+  }
+}

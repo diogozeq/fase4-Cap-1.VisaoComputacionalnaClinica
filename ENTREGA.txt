@@ -1,0 +1,34 @@
+CardioIA - Fase 4: Assistente Cardiologico Virtual com Visao Computacional
+
+Aluno: Diogo Zequini
+RM: 565535
+Turma: 2TIAOA
+Entrega individual (sem grupo).
+
+Como rodar: na raiz do projeto, execute -> python start.py
+(monta o ambiente, mostra os resultados, roda autoteste e abre o portal web).
+
+GitHub:
+https://github.com/diogozeq/fase4-Cap-1.VisaoComputacionalnaClinica
+
+Kaggle Notebooks (PUBLICOS, executados, com resultados):
+1. Pre-processamento (EDA + split por paciente):
+   https://www.kaggle.com/code/diogozequini/cardioia-fase4-etapa1-eda
+2. CNN do zero + 3. Transfer Learning (MobileNetV2) + avaliacao + Grad-CAM:
+   https://www.kaggle.com/code/diogozequini/cardioia-fase4-treino
+4. Fairness/Governanca + Grad-CAM (Ir Alem 1):
+   https://www.kaggle.com/code/diogozequini/cardioia-fase4-gradcam-fairness
+
+Video demo (se Ir Alem 2/mobile for entregue):
+TODO
+
+Observacoes:
+- Prototipo academico. Nao e dispositivo medico.
+- Dataset principal: NIH Chest X-ray14, recorte Cardiomegaly vs No Finding (2400 imgs, 1200/classe).
+- Split por Patient ID, sem vazamento entre treino/validacao/teste (interseccao vazia provada).
+- Treino executado no Kaggle (CPU). Pesos ImageNet via dataset:
+  https://www.kaggle.com/datasets/diogozequini/mnv2-imagenet-notop-weights
+- Os 3 notebooks Kaggle estao PUBLICOS e executados (com saidas/resultados visiveis).
+- Backend Flask validado localmente (Python 3.11 + TF 2.16): evidencia em docs/prints/
+  flask_predict_resposta.json e flask_gradcam_exemplo.png.
+

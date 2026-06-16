@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "CardioIA",
+    "slug": "cardioia-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "ios": {
+      "infoPlist": {
+        "NSCameraUsageDescription": "O app usa a câmera para capturar a imagem de raio-X a ser analisada (protótipo acadêmico).",
+        "NSPhotoLibraryUsageDescription": "O app acessa a galeria para selecionar a imagem de raio-X a ser analisada (protótipo acadêmico)."
+      }
+    },
+    "android": {
+      "permissions": ["CAMERA", "READ_EXTERNAL_STORAGE"]
+    },
+    "plugins": ["expo-image-picker"],
+    "extra": {
+      "_comentario": "Defina aqui o endereço do backend Flask: IP local (Android, mesma WiFi) ou URL https do ngrok (iOS). Não precisa editar código.",
+      "apiHost": "http://192.168.0.10:5000"
+    }
+  }
+}

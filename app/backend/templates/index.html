@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html class="light" lang="pt-br">
+<head>
+<meta charset="utf-8" />
+<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+<title>CardioIA | Painel de Visão Computacional Clínica</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+<script id="tailwind-config">
+  tailwind.config = { darkMode:"class", theme:{ extend:{
+    colors:{ "surface":"#f7f9fb","on-surface":"#191c1e","on-surface-variant":"#424751",
+      "surface-container-lowest":"#ffffff","surface-container-low":"#f2f4f6","surface-container":"#eceef0",
+      "surface-container-high":"#e6e8ea","surface-container-highest":"#e0e3e5","surface-variant":"#e0e3e5",
+      "primary":"#00346f","primary-container":"#004a99","primary-fixed":"#d7e2ff","primary-fixed-dim":"#abc7ff",
+      "on-primary":"#ffffff","on-primary-container":"#9bbdff","clinical-blue-dark":"#003366",
+      "secondary":"#505f76","secondary-container":"#d0e1fb","on-secondary-container":"#54647a",
+      "tertiary":"#71001d","tertiary-container":"#9c002b","on-tertiary":"#ffffff","tertiary-fixed":"#ffdada",
+      "error-container":"#ffdad6","on-error-container":"#93000a","status-revised":"#10B981",
+      "outline":"#737783","outline-variant":"#c2c6d3","disclaimer-bg":"#FFF1F2","background":"#f7f9fb" },
+    borderRadius:{ "DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem" },
+    spacing:{ "xray-dimen":"224px","container-max":"1200px","margin-edge":"32px" },
+    fontFamily:{ "body":["Inter"],"mono":["JetBrains Mono"] },
+    fontSize:{ "label-caps":["12px",{"lineHeight":"16px","letterSpacing":"0.05em","fontWeight":"700"}],
+      "headline-md":["24px",{"lineHeight":"32px","fontWeight":"600"}],
+      "headline-lg":["32px",{"lineHeight":"40px","letterSpacing":"-0.02em","fontWeight":"700"}],
+      "headline-sm":["18px",{"lineHeight":"24px","fontWeight":"600"}],
+      "mono-score":["20px",{"lineHeight":"28px","fontWeight":"500"}],
+      "body-md":["14px",{"lineHeight":"20px"}],"body-lg":["16px",{"lineHeight":"24px"}] } } } }
+</script>
+<style>
+  body{font-family:'Inter',sans-serif}
+  .material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;
+    font-family:'Material Symbols Outlined'}
+  .drop-active{border-color:#00346f;background:#f0f7ff}
+  .audit-row:hover{background:#f1f5f9}
+  .view{display:none}.view.show{display:block;animation:fade .25s}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  .navlink.active{color:#00346f;font-weight:700}
+</style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col font-body">
+
+<!-- Top App Bar -->
+<header class="flex justify-between items-center px-4 md:px-8 h-16 w-full sticky top-0 z-50 bg-surface border-b border-outline-variant">
+  <div class="flex items-center gap-2">
+    <span class="material-symbols-outlined text-primary">clinical_notes</span>
+    <span class="text-headline-md font-bold text-primary tracking-tight">CardioIA</span>
+    <span class="hidden sm:inline text-label-caps text-on-surface-variant border border-outline-variant px-2 py-0.5 rounded ml-2">FASE 4 · RM 565535</span>
+  </div>
+  <nav class="hidden md:flex items-center gap-1" id="nav">
+    <a class="navlink active px-3 py-2 rounded-xl text-body-md hover:bg-surface-container-high cursor-pointer" data-view="analyze">Analisar</a>
+    <a class="navlink px-3 py-2 rounded-xl text-body-md text-on-surface-variant hover:bg-surface-container-high cursor-pointer" data-view="dashboard">Painel</a>
+    <a class="navlink px-3 py-2 rounded-xl text-body-md text-on-surface-variant hover:bg-surface-container-high cursor-pointer" data-view="data">Dados</a>
+    <a class="navlink px-3 py-2 rounded-xl text-body-md text-on-surface-variant hover:bg-surface-container-high cursor-pointer" data-view="fairness">Equidade</a>
+    <a class="navlink px-3 py-2 rounded-xl text-body-md text-on-surface-variant hover:bg-surface-container-high cursor-pointer" data-view="history">Histórico</a>
+  </nav>
+  <span class="material-symbols-outlined text-on-surface-variant p-2 rounded-full">account_circle</span>
+</header>
+
+<main class="flex-grow w-full max-w-container-max mx-auto px-4 md:px-margin-edge py-8 space-y-12">
+
+  <!-- ====================== ANALISAR ====================== -->
+  <div id="analyze" class="view show space-y-12">
+    <!-- Hero -->
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+      <div class="space-y-6">
+        <div class="space-y-2">
+          <span class="text-label-caps text-primary border border-primary px-2 py-0.5 rounded">PROTÓTIPO ACADÊMICO</span>
+          <h1 class="text-headline-lg text-on-surface">Triagem de Cardiomegalia por Deep Learning</h1>
+          <p class="text-body-lg text-on-surface-variant max-w-xl">
+            Visão computacional para detectar aumento da área cardíaca em radiografias de tórax.
+            Arquitetura <b>MobileNetV2</b> com fine-tuning, treinada no NIH Chest X-ray14 com
+            split por paciente (sem vazamento) e Grad-CAM para auditoria.
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-4">
+          <button onclick="document.getElementById('file-input').click()" class="bg-primary text-on-primary px-6 py-3 rounded-xl font-bold flex items-center gap-2 active:scale-95 transition-all shadow-sm">
+            <span class="material-symbols-outlined">upload_file</span> Enviar raio-X
+          </button>
+          <button onclick="goView('dashboard')" class="border border-outline text-on-surface-variant px-6 py-3 rounded-xl font-bold hover:bg-surface-container transition-all">Ver desempenho</button>
+        </div>
+        <div>
+          <p class="text-label-caps text-on-surface-variant mb-2">OU CLIQUE NUM EXEMPLO REAL</p>
+          <div class="flex gap-3 flex-wrap" id="examples"></div>
+        </div>
+      </div>
+      <!-- Drop zone -->
+      <div id="drop-zone" class="w-full flex flex-col items-center justify-center border-2 border-dashed border-outline-variant bg-surface-container-lowest rounded-xl p-8 transition-colors">
+        <div class="w-xray-dimen h-xray-dimen border border-outline-variant rounded-lg bg-surface-container flex items-center justify-center overflow-hidden relative">
+          <img id="hero-preview" class="object-cover w-full h-full hidden" alt="preview" />
+          <div id="hero-placeholder" class="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
+            <span class="material-symbols-outlined text-primary text-4xl mb-2">add_a_photo</span>
+            <p class="text-label-caps text-primary">Arraste PNG / JPG / WEBP aqui</p>
+            <p class="text-[10px] text-on-surface-variant mt-1">ENTRADA DA CNN: 224×224 · só raio-X de tórax frontal</p>
+          </div>
+        </div>
+        <div class="mt-4 text-center">
+          <p class="text-body-md text-on-surface-variant">Processamento local · imagem não armazenada (retenção zero).</p>
+          <input accept="image/*" class="hidden" id="file-input" type="file" />
+          <button class="text-primary font-bold text-body-md mt-2 underline" onclick="document.getElementById('file-input').click()">Procurar arquivo</button>
+          <p id="err" class="text-tertiary text-body-md mt-2"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Resultado (Diagnostic Analysis) -->
+    <section id="result" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <!-- Esquerda: imagem + Grad-CAM -->
+      <div class="lg:col-span-5 space-y-6">
+        <div class="relative bg-black rounded-lg overflow-hidden border border-outline-variant aspect-square w-full">
+          <img id="res-xray" class="w-full h-full object-contain" alt="raio-x" />
+          <img id="res-heatmap" class="w-full h-full object-contain absolute inset-0 hidden" alt="grad-cam" />
+          <div class="absolute top-3 left-3 bg-black/60 text-white text-[10px] px-2 py-1 font-mono uppercase tracking-widest rounded border border-white/20">Entrada 224×224</div>
+        </div>
+        <div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant flex items-center justify-between">
+          <div><h3 class="text-headline-sm">Auditoria visual</h3><p class="text-body-md text-on-surface-variant">Mostrar mapa de atenção (Grad-CAM)</p></div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input class="sr-only peer" id="gradToggle" type="checkbox" onchange="document.getElementById('res-heatmap').classList.toggle('hidden', !this.checked)" />
+            <div class="w-11 h-6 bg-outline-variant rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+          </label>
+        </div>
+        <aside class="bg-disclaimer-bg border-l-4 border-tertiary p-4 rounded-r-lg">
+          <div class="flex gap-3"><span class="material-symbols-outlined text-tertiary">warning</span>
+            <div><h4 class="text-label-caps text-tertiary uppercase mb-1">Aviso médico crítico</h4>
+              <p class="text-[13px] leading-relaxed"><strong>EXPERIMENTAL: NÃO É DISPOSITIVO MÉDICO.</strong>
+                Saída apenas para fins acadêmicos/auditoria. O score é confiança algorítmica, não fato clínico.
+                Sempre consulte um radiologista.</p></div></div>
+        </aside>
+      </div>
+      <!-- Direita: achado + métricas -->
+      <div class="lg:col-span-7 space-y-6">
+        <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant shadow-sm">
+          <div class="flex justify-between items-start mb-4 gap-4">
+            <div><span class="text-label-caps text-on-surface-variant uppercase">Saída do modelo</span>
+              <h2 id="res-classe" class="text-headline-lg text-primary mt-1">—</h2></div>
+            <div class="text-right shrink-0"><span class="text-label-caps text-on-surface-variant uppercase">Score experimental</span>
+              <div id="res-score" class="font-mono text-mono-score text-primary-container bg-primary-fixed px-4 py-1 rounded border border-primary-container mt-1">0.00</div></div>
+          </div>
+          <div class="border-t border-outline-variant pt-4"><p id="res-text" class="text-body-lg leading-relaxed"></p></div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-surface-container p-4 rounded-xl border border-outline-variant">
+            <h3 class="text-label-caps text-on-surface-variant uppercase mb-4">Desempenho (teste)</h3>
+            <div class="space-y-3" id="perf-bars"></div>
+          </div>
+          <div class="bg-surface-container p-4 rounded-xl border border-outline-variant">
+            <h3 class="text-label-caps text-on-surface-variant uppercase mb-4">Equidade por gênero (TPR)</h3>
+            <div class="space-y-4" id="fair-bars"></div>
+          </div>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4 pt-2">
+          <button onclick="goView('history')" class="flex-1 bg-primary text-on-primary text-headline-sm py-4 rounded-lg flex items-center justify-center gap-2 hover:bg-clinical-blue-dark transition-all active:scale-95">
+            <span class="material-symbols-outlined">history</span> Ver histórico</button>
+          <button onclick="resetResult()" class="flex-1 border-2 border-outline text-on-surface-variant text-headline-sm py-4 rounded-lg flex items-center justify-center gap-2 hover:bg-surface-container-high transition-all active:scale-95">
+            <span class="material-symbols-outlined">restart_alt</span> Nova análise</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ====================== PAINEL ====================== -->
+  <div id="dashboard" class="view space-y-6">
+    <h2 class="text-headline-md">Desempenho dos modelos</h2>
+    <section class="grid grid-cols-1 md:grid-cols-4 gap-6" id="kpis"></section>
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden">
+      <div class="px-6 py-3 bg-surface-container border-b border-outline-variant text-label-caps text-on-surface-variant">COMPARATIVO (CONJUNTO DE TESTE)</div>
+      <div id="tbl-metrics" class="p-2 overflow-x-auto"></div>
+    </div>
+    <div class="bg-surface-container p-4 rounded-xl border border-outline-variant" id="guardrails"></div>
+  </div>
+
+  <!-- ====================== DADOS ====================== -->
+  <div id="data" class="view space-y-6">
+    <h2 class="text-headline-md">Dataset & particionamento</h2>
+    <div class="bg-surface-container-lowest p-5 rounded-xl border border-outline-variant text-body-md" id="data-intro"></div>
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden">
+      <div class="px-6 py-3 bg-surface-container border-b border-outline-variant text-label-caps text-on-surface-variant flex items-center gap-2">
+        SPLIT POR PACIENTE <span class="bg-status-revised/15 text-status-revised text-[10px] px-2 py-0.5 rounded-full font-bold">SEM VAZAMENTO</span></div>
+      <div id="tbl-splits" class="p-2 overflow-x-auto"></div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant"><h3 class="text-label-caps text-on-surface-variant uppercase mb-2">Gênero × classe</h3><div id="tbl-gender" class="overflow-x-auto"></div></div>
+      <div class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant"><h3 class="text-label-caps text-on-surface-variant uppercase mb-2">Incidência (AP/PA) × classe</h3><div id="tbl-view" class="overflow-x-auto"></div></div>
+    </div>
+  </div>
+
+  <!-- ====================== EQUIDADE ====================== -->
+  <div id="fairness" class="view space-y-6">
+    <h2 class="text-headline-md">Ética & Equidade</h2>
+    <div class="bg-surface-container-lowest p-5 rounded-xl border border-outline-variant text-body-md">
+      Análise de <b>equal opportunity</b> (TPR/FPR por subgrupo, IC 95%). Maior viés: <b>incidência AP vs PA</b>
+      (gap de FPR 0,36) — confirma o atalho técnico (exames AP, de pacientes mais graves, inflam a silhueta cardíaca).</div>
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden">
+      <div class="px-6 py-3 bg-surface-container border-b border-outline-variant text-label-caps text-on-surface-variant">MÉTRICAS POR SUBGRUPO</div>
+      <div id="tbl-fair" class="p-2 overflow-x-auto"></div>
+      <div id="fair-gaps" class="px-6 py-3 text-body-md text-on-surface-variant border-t border-outline-variant"></div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="g-fair"></div>
+    <h3 class="text-headline-sm">Grad-CAM — auditoria de atalho</h3>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="g-grad"></div>
+  </div>
+
+  <!-- ====================== HISTÓRICO ====================== -->
+  <div id="history" class="view space-y-4">
+    <div class="flex justify-between items-end">
+      <div><h2 class="text-headline-md">Auditorias da sessão</h2>
+        <p class="text-body-md text-on-surface-variant">Predições feitas nesta sessão (zera ao reiniciar o servidor).</p></div>
+      <button onclick="loadHistory()" class="text-primary text-label-caps flex items-center gap-1 hover:underline"><span class="material-symbols-outlined text-sm">refresh</span> Atualizar</button>
+    </div>
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden"><div id="tbl-hist" class="p-2 overflow-x-auto"></div></div>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="w-full px-4 py-3 flex flex-col items-center text-center gap-1 bg-disclaimer-bg border-l-4 border-tertiary sticky bottom-0 z-40">
+  <p class="text-[13px] font-semibold text-tertiary"><span class="font-bold">EXPERIMENTAL: NÃO É DISPOSITIVO MÉDICO.</span> Apenas para fins acadêmicos (FIAP). Resultados devem ser verificados por um radiologista.</p>
+</footer>
+
+<script>
+const $=(id)=>document.getElementById(id); let DASH=null;
+const fmt=(v)=>isNaN(+v)?v:(+v).toFixed(3);
+const isCardio=(c)=>c==='Cardiomegaly';
+/* mapas de tradução (UI 100% pt-br; chaves de dados permanecem as do modelo) */
+const PT_CLASSE={'Cardiomegaly':'Cardiomegalia','No Finding':'Sem achados'};
+const PT_ATRIB={'Patient Gender':'Gênero','faixa_etaria':'Faixa etária','View Position':'Incidência'};
+const PT_SUB={'F':'Feminino','M':'Masculino'};
+const ptSub=(s)=>PT_SUB[s]||s;
+const ptAtrib=(a)=>PT_ATRIB[a]||a;
+
+function goView(v){
+  document.querySelectorAll('.view').forEach(s=>s.classList.remove('show'));
+  $(v).classList.add('show');
+  document.querySelectorAll('.navlink').forEach(a=>{const on=a.dataset.view===v;
+    a.classList.toggle('active',on);a.classList.toggle('text-on-surface-variant',!on);});
+  if(v==='history') loadHistory();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+$('nav').addEventListener('click',(e)=>{const a=e.target.closest('.navlink');if(a)goView(a.dataset.view);});
+
+async function loadDashboard(){
+  try{const r=await fetch('/api/dashboard');DASH=await r.json();
+    if(DASH.erro){$('tbl-metrics').textContent=DASH.erro;return;}
+    renderKpis();renderMetrics();renderGuardrails();renderData();renderFairness();
+  }catch(e){$('tbl-metrics').textContent='Falha: '+e.message;}
+}
+function best(){const m=(DASH&&DASH.metricas)||[];return m.find(x=>/fine/i.test(x.modelo))||m[m.length-1]||{};}
+
+function kpi(v,l,accent){return `<div class="bg-surface-container-low border border-outline-variant p-6 rounded-xl">
+  <p class="font-mono text-mono-score ${accent?'text-primary':'text-on-surface'}">${v}</p>
+  <p class="text-label-caps text-on-surface-variant uppercase mt-2">${l}</p></div>`;}
+function renderKpis(){const b=best(),ds=DASH.dataset||{};
+  $('kpis').innerHTML=[kpi(fmt(b.auc_roc),'AUC-ROC',true),kpi(fmt(b.recall),'Recall (sensibilidade)',true),
+    kpi((ds.total_imgs||0).toLocaleString('pt-BR'),'Imagens'),kpi((ds.total_pacientes||0).toLocaleString('pt-BR'),'Pacientes')].join('');}
+
+function table(cols,rows,opts){opts=opts||{};
+  return `<table class="w-full text-left border-collapse text-body-md"><thead class="text-label-caps text-on-surface-variant">
+    <tr>${cols.map(c=>`<th class="px-4 py-2">${c[1]}</th>`).join('')}</tr></thead>
+    <tbody class="divide-y divide-outline-variant">${rows.map(r=>`<tr class="audit-row ${opts.best&&opts.best(r)?'bg-primary-fixed/40':''}">`+
+      cols.map(c=>`<td class="px-4 py-3">${opts.cell?opts.cell(c[0],r):r[c[0]]}</td>`).join('')+'</tr>').join('')}</tbody></table>`;}
+
+function renderMetrics(){const cols=[['modelo','Modelo'],['accuracy','Acur.'],['precision','Prec.'],['recall','Recall'],['f1','F1'],['auc_roc','AUC-ROC'],['auc_pr','AUC-PR']];
+  $('tbl-metrics').innerHTML=table(cols,DASH.metricas||[],{best:r=>/fine/i.test(r.modelo),
+    cell:(k,r)=>k==='modelo'?`<b>${r.modelo}</b>`:`<span class="font-mono">${fmt(r[k])}</span>`});}
+
+function renderGuardrails(){const items=[['Split por paciente (anti-vazamento)',true],['Retenção zero de uploads',true],
+  ['Disclaimer médico em toda tela',true],['Métrica AUC-PR p/ classe desbalanceada',true],['Auditoria de fairness por subgrupo',true],['Grad-CAM (explicabilidade)',true]];
+  $('guardrails').innerHTML=`<h3 class="text-label-caps text-on-surface-variant uppercase mb-3 flex items-center gap-2"><span class="material-symbols-outlined text-tertiary">gavel</span> Guardrails de governança</h3>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">${items.map(i=>`<div class="flex items-center justify-between"><span class="text-body-md">${i[0]}</span>
+    <span class="material-symbols-outlined text-status-revised text-base">check_circle</span></div>`).join('')}</div>`;}
+
+function miniTable(obj,k1){const rows=Object.entries(obj||{});
+  return table([['k',k1],['c','Cardiomegalia'],['n','Sem achados']],
+    rows.map(([k,v])=>({k:ptSub(k),c:v['Cardiomegaly']||0,n:v['No Finding']||0})));}
+function renderData(){const ds=DASH.dataset||{};
+  $('data-intro').innerHTML=`<b>NIH Chest X-ray14</b> — recorte <b>Cardiomegaly vs No Finding</b>. Subconjunto balanceado de
+    <b>${(ds.total_imgs||0).toLocaleString('pt-BR')}</b> imagens (${(ds.total_pacientes||0).toLocaleString('pt-BR')} pacientes únicos),
+    224×224 RGB, idades ${ds.idade_min}–${ds.idade_max} (média ${ds.idade_media}).
+    <span class="text-on-surface-variant">Limitação: rótulos do NIH vêm de laudos (NLP), não de validação manual.</span>`;
+  const sp=ds.splits||{},nome={train:'Treino',val:'Validação',test:'Teste'},order=['train','val','test'];
+  $('tbl-splits').innerHTML=table([['s','Partição'],['i','Imagens'],['p','Pacientes'],['c','Cardiomegalia'],['n','Sem achados']],
+    order.filter(s=>sp[s]).map(s=>({s:nome[s],i:sp[s].imgs,p:sp[s].pacientes,c:sp[s].Cardiomegaly,n:sp[s]['No Finding']})),
+    {cell:(k,r)=>k==='s'?`<b>${r.s}</b>`:r[k]});
+  $('tbl-gender').innerHTML=miniTable(ds.genero,'Gênero');
+  $('tbl-view').innerHTML=miniTable(ds.view,'Incidência');}
+
+function renderFairness(){const f=DASH.fairness||[];
+  const cols=[['atributo','Atributo'],['subgrupo','Subgrupo'],['n','n'],['TPR','TPR'],['TPR_ic95','IC95 TPR'],['FPR','FPR'],['FPR_ic95','IC95 FPR'],['precisao','Precisão']];
+  $('tbl-fair').innerHTML=table(cols,f,{cell:(k,r)=>k==='atributo'?ptAtrib(r.atributo):(k==='subgrupo'?ptSub(r.subgrupo):r[k])});
+  const g=DASH.fairness_gaps||{};
+  $('fair-gaps').innerHTML='<b>Gaps (máx−mín):</b> '+Object.entries(g).map(([k,v])=>`${ptAtrib(k)}: TPR ${v.gap_TPR} / FPR ${v.gap_FPR}`).join(' · ');
+  $('g-fair').innerHTML=(DASH.plots.fairness||[]).map(f=>`<figure class="bg-surface-container-lowest border border-outline-variant rounded-xl p-2 m-0">
+    <img src="/resultados/${f}" class="w-full rounded cursor-zoom-in" onclick="zoom('/resultados/${f}')"/><figcaption class="text-center text-body-md text-on-surface-variant mt-1">${f.includes('genero')?'Equidade por gênero':'Equidade por faixa etária'}</figcaption></figure>`).join('');
+  $('g-grad').innerHTML=(DASH.plots.gradcam||[]).map(f=>`<img src="/resultados/${f}" class="w-full rounded-lg border border-outline-variant cursor-zoom-in" onclick="zoom('/resultados/${f}')"/>`).join('');}
+
+/* ---------- classificador ---------- */
+function bar(label,val,color){const pct=Math.round(val*100);
+  return `<div><div class="flex justify-between items-center"><span class="text-body-md text-on-surface-variant">${label}</span>
+    <span class="font-mono text-primary font-bold">${(val*100).toFixed(1)}%</span></div>
+    <div class="w-full bg-outline-variant h-1.5 rounded-full overflow-hidden mt-1"><div class="${color} h-full" style="width:${pct}%"></div></div></div>`;}
+function renderResult(j,imgSrc){
+  $('result').classList.remove('hidden');
+  $('res-xray').src=imgSrc; $('res-heatmap').src=j.gradcam||''; $('res-heatmap').classList.add('hidden'); $('gradToggle').checked=false;
+  const c=$('res-classe'),cardio=isCardio(j.classe);
+  c.textContent=cardio?'Cardiomegalia detectada':'Sem achados (normal)';
+  c.className='text-headline-lg mt-1 '+(cardio?'text-tertiary':'text-primary');
+  $('res-score').textContent=(+j.score_experimental).toFixed(2);
+  $('res-text').textContent=cardio
+    ? 'A rede indicou aumento da silhueta cardíaca. Ative o Grad-CAM para ver onde o modelo concentrou a atenção. Valor experimental — não é diagnóstico.'
+    : 'A rede não indicou sinais de cardiomegalia (score abaixo do limiar). Valor experimental — não substitui avaliação clínica.';
+  const b=best();
+  $('perf-bars').innerHTML=bar('Recall (sensibilidade)',+b.recall||0,'bg-primary')+bar('AUC-ROC',+b.auc_roc||0,'bg-primary')+bar('AUC-PR',+b.auc_pr||0,'bg-secondary');
+  const fg=((DASH&&DASH.fairness)||[]).filter(x=>x.atributo==='Patient Gender');
+  const fF=fg.find(x=>x.subgrupo==='F')||{},fM=fg.find(x=>x.subgrupo==='M')||{};
+  const gap=(DASH&&DASH.fairness_gaps&&DASH.fairness_gaps['Patient Gender'])||{};
+  $('fair-bars').innerHTML=bar('Feminino',+fF.TPR||0,'bg-secondary')+bar('Masculino',+fM.TPR||0,'bg-secondary')
+    +`<p class="text-[11px] text-on-surface-variant italic">Gap de paridade (TPR): ${gap.gap_TPR??'—'}</p>`;
+  $('result').scrollIntoView({behavior:'smooth'});
+}
+function resetResult(){$('result').classList.add('hidden');$('hero-preview').classList.add('hidden');$('hero-placeholder').classList.remove('hidden');$('file-input').value='';}
+
+async function classifyFile(file){
+  $('err').textContent='';
+  if(!file || !file.type.startsWith('image/')){
+    $('err').textContent='Arquivo inválido — envie uma imagem (PNG, JPG ou WEBP).'; return; }
+  // troca o preview do topo pela imagem recém-arrastada/escolhida
+  const url=URL.createObjectURL(file);
+  $('hero-preview').src=url;$('hero-preview').classList.remove('hidden');$('hero-placeholder').classList.add('hidden');
+  const data=new FormData();data.append('file',file);
+  try{const r=await fetch('/predict',{method:'POST',body:data});const j=await r.json();
+    if(!r.ok)throw new Error(j.erro||'Erro');renderResult(j,url);
+  }catch(ex){$('err').textContent=ex.message; $('result').classList.add('hidden');}
+}
+$('file-input').addEventListener('change',function(){if(this.files.length)classifyFile(this.files[0]);});
+const dz=$('drop-zone');
+['dragenter','dragover'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add('drop-active');}));
+['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove('drop-active');}));
+dz.addEventListener('drop',e=>{if(e.dataTransfer.files.length)classifyFile(e.dataTransfer.files[0]);});
+
+async function loadExamples(){try{const r=await fetch('/sample-list');const files=await r.json();
+  $('examples').innerHTML=files.map(f=>{const pos=/cardiomegaly/i.test(f);
+    return `<button onclick="runSample('${f}')" class="bg-surface-container-lowest border border-outline-variant rounded-xl p-1.5 hover:border-primary transition-all w-[78px]">
+      <img src="/sample/${f}" class="w-16 h-16 object-cover rounded-md"/><span class="block text-[10px] text-center mt-1 ${pos?'text-tertiary':'text-secondary'} font-bold">${pos?'Cardio':'Normal'}</span></button>`;}).join('');
+}catch(e){}}
+async function runSample(name){$('err').textContent='';
+  try{const r=await fetch('/predict-sample?name='+encodeURIComponent(name));const j=await r.json();
+    if(!r.ok)throw new Error(j.erro||'Erro');
+    $('hero-preview').src='/sample/'+name;$('hero-preview').classList.remove('hidden');$('hero-placeholder').classList.add('hidden');
+    renderResult(j,'/sample/'+name);
+  }catch(ex){$('err').textContent=ex.message;}}
+
+/* ---------- histórico ---------- */
+async function loadHistory(){try{const r=await fetch('/api/history');const h=await r.json();
+  if(!h.length){$('tbl-hist').innerHTML='<p class="px-6 py-8 text-center text-on-surface-variant text-body-md">Nenhuma predição ainda. Vá em <b>Analisar</b> e teste uma imagem.</p>';return;}
+  $('tbl-hist').innerHTML=table([['hora','Hora'],['origem','Origem'],['arquivo','Arquivo'],['classe','Achado'],['score','Score']],h,
+    {cell:(k,r)=>{if(k==='score')return `<span class="font-mono text-primary">${r.score}</span>`;
+      if(k==='classe'){const c=isCardio(r.classe);return `<span class="${c?'bg-error-container text-on-error-container':'bg-surface-container-highest text-on-surface-variant'} px-2 py-0.5 rounded-full text-[10px] font-bold">${c?'CARDIOMEGALIA (+)':'NEGATIVO (−)'}</span>`;}
+      if(k==='arquivo')return `<span class="font-mono text-xs text-on-surface-variant">${r.arquivo}</span>`;return r[k];}});
+}catch(e){}}
+
+/* lightbox simples */
+function zoom(src){const d=document.createElement('div');d.style.cssText='position:fixed;inset:0;background:#000c;display:flex;align-items:center;justify-content:center;z-index:99;padding:30px;cursor:zoom-out';
+  d.onclick=()=>d.remove();const i=new Image();i.src=src;i.style.cssText='max-width:95%;max-height:95%;border-radius:10px';d.appendChild(i);document.body.appendChild(d);}
+
+loadDashboard();loadExamples();
+</script>
+</body>
+</html>

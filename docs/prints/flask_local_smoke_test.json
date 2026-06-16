@@ -1,0 +1,26 @@
+[
+  {
+    "arquivo": "sample_cardiomegaly_00000732_008.png",
+    "classe": "Cardiomegaly",
+    "score": 0.7311,
+    "gradcam": true
+  },
+  {
+    "arquivo": "sample_cardiomegaly_00010535_013.png",
+    "classe": "Cardiomegaly",
+    "score": 0.8296,
+    "gradcam": true
+  },
+  {
+    "arquivo": "sample_nofinding_00013917_054.png",
+    "classe": "No Finding",
+    "score": 0.41,
+    "gradcam": true
+  },
+  {
+    "arquivo": "sample_nofinding_00030247_007.png",
+    "classe": "Cardiomegaly",
+    "score": 0.5729,
+    "gradcam": true
+  }
+]

@@ -1,0 +1,8 @@
+{
+  "classe": "Cardiomegaly",
+  "disclaimer": "Protótipo acadêmico (FIAP — CardioIA Fase 4). NÃO é dispositivo médico, NÃO foi validado clinicamente e NÃO deve ser usado para diagnóstico real. O valor exibido é um score experimental, não uma probabilidade clínica.",
+  "gradcam": "<PNG base64 71610 chars -> docs/prints/flask_gradcam_exemplo.png>",
+  "score_experimental": 0.7311,
+  "threshold": 0.5,
+  "_nota": "Resposta real do POST /predict (Flask local, Python 3.11 + TF 2.16) sobre raio-X de teste sample_cardiomegaly_00000732_008.png"
+}
