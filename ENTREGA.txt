@@ -19,8 +19,8 @@ Kaggle Notebooks (PUBLICOS, executados, com resultados):
 4. Fairness/Governanca + Grad-CAM (Ir Alem 1):
    https://www.kaggle.com/code/diogozequini/cardioia-fase4-gradcam-fairness
 
-Video demo (se Ir Alem 2/mobile for entregue):
-TODO
+Video demo:
+https://youtu.be/t8ixEr7cpXs
 
 Observacoes:
 - Prototipo academico. Nao e dispositivo medico.

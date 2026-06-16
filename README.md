@@ -2,6 +2,8 @@
 
 > FIAP — 2° Ano — Fase 4 (2026)
 
+> 🎥 **Demonstração em vídeo:** https://youtu.be/t8ixEr7cpXs
+
 > ⚠️ **Protótipo acadêmico. Não é dispositivo médico, não foi validado clinicamente e não deve ser usado
 > para diagnóstico real.** O valor exibido é um *score experimental*, não uma probabilidade clínica.
 
@@ -89,7 +91,7 @@ Mantive a marca registrada do CardioIA: **foco cardiológico, governança/LGPD e
 |-----------|---------|------|
 | Interface React Native (upload + resultado) | App Expo com tela de upload/câmera e tela de resultado (classe + score + Grad-CAM) | `app/mobile/` |
 | Integração com backend (Flask) | Consome o mesmo `/predict` do backend; host configurável em `app.json` | `app/mobile/src/services/api.ts` |
-| Repositório GitHub + vídeo de até 3 min | Código no repositório; vídeo a gravar | (link abaixo) |
+| Repositório GitHub + vídeo de até 3 min | Repositório publicado + vídeo de demonstração | ✅ (links abaixo) |
 
 ---
 
@@ -217,7 +219,7 @@ A demanda dá +1 ponto extra para grupos de 2 a 5 integrantes. Optei por fazer *
   - Pré-processamento: https://www.kaggle.com/code/diogozequini/cardioia-fase4-etapa1-eda
   - Modelagem (CNN + Transfer): https://www.kaggle.com/code/diogozequini/cardioia-fase4-treino
   - Grad-CAM + Fairness (Ir Além 1): https://www.kaggle.com/code/diogozequini/cardioia-fase4-gradcam-fairness
-- **Vídeo demo (Ir Além 2 / mobile):** _(a gravar)_
+- **Vídeo demo:** https://youtu.be/t8ixEr7cpXs
 
 ---
 
